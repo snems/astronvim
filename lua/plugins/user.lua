@@ -5,6 +5,16 @@
 return {
 
   { "mileszs/ack.vim", enabled = true },
+  {"vimwiki/vimwiki", 
+    init = function() 
+        vim.g.vimwiki_list = {
+            {
+            path = '~/Documents/vimwiki',
+            syntax = 'markdown',
+            ext = '.md',
+            },
+        }
+    end, },
 
   -- == Examples of Adding Plugins ==
 
