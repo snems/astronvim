@@ -5,6 +5,13 @@
 return {
 
   { "mileszs/ack.vim", enabled = true },
+  { "jpmcb/nvim-llama", 
+    enabled = true,
+    config = function() 
+      --require('nvim-llama').setup({ debug = true, model = 'codellama:7b', }) 
+      require('nvim-llama').setup({ debug = true, model = 'starcoder2:7b', }) 
+    end,
+  },
   {"vimwiki/vimwiki", 
     init = function() 
         vim.g.vimwiki_list = {
