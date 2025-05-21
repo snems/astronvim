@@ -5,11 +5,68 @@
 return {
 
   { "mileszs/ack.vim", enabled = true },
-  { "jpmcb/nvim-llama", 
+  --{ "jpmcb/nvim-llama", 
+  --  enabled = true,
+  --  config = function() 
+  --    --require('nvim-llama').setup({ debug = true, model = 'codellama:7b', }) 
+  --    require('nvim-llama').setup({ debug = true, model = 'starcoder2:7b', }) 
+  --  end,
+  --},
+  { "olimorris/codecompanion.nvim",
     enabled = true,
-    config = function() 
-      --require('nvim-llama').setup({ debug = true, model = 'codellama:7b', }) 
-      require('nvim-llama').setup({ debug = true, model = 'starcoder2:7b', }) 
+    config = true,
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    config = function()
+      require("codecompanion").setup({
+          strategies = {
+          chat = {
+            adapter = "codellama",
+          },
+          inline = {
+            adapter = "codellama",
+          },
+        },
+        adapters = {
+          codellama = function()
+            return require("codecompanion.adapters").extend("ollama", {
+              name = "codellama", -- Give this adapter a different name to differentiate it from the default ollama adapter
+              env = {
+                url = "http://192.168.82.1:12343",
+                --api_key = "OLLAMA_API_KEY",
+              },
+              schema = {
+                model = {
+                  default = "codellama:7b",
+                },
+                --num_ctx = {
+                --  default = 16384,
+                --},
+                --num_predict = {
+                --  default = -1,
+                --},
+              },
+            })
+          end,
+          codellama2 = function()
+            return require("codecompanion.adapters").extend("ollama", {
+              env = {
+                url = "http://192.168.82.1:12343",
+                --api_key = "OLLAMA_API_KEY",
+              },
+              headers = {
+                --["Content-Type"] = "application/json",
+              --  ["Authorization"] = "Bearer ${api_key}",
+              },
+              parameters = {
+                sync = true,
+              },
+            })
+            end,
+          },
+      })
     end,
   },
   {"vimwiki/vimwiki", 
